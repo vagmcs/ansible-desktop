@@ -1,0 +1,42 @@
+- name: Checking '.bashrc' configuration
+  shell: grep "neofetch" /home/{{ user }}/.bashrc
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - bash
+    - bash.bashrc
+  
+- name: Update '.bashrc' to use 'neofetch' on startup
+  blockinfile:
+    insertafter: EOF
+    dest: /home/{{ user }}/.bashrc
+    marker: "{mark}"
+    marker_begin: "# Run neofetch at startup"
+    marker_end: ""
+    block: |
+      neofetch
+  when: result.rc == 1
+  tags:
+    - bash
+    - bash.bashrc
+  
+- name: Update '.bashrc' to display git branches
+  blockinfile:
+    insertafter: EOF
+    dest: /home/{{ user }}/.bashrc
+    marker: "{mark}"
+    marker_begin: "# Git branch parse function"
+    marker_end: ""
+    block: |
+      parse_git_branch() {
+          git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+      }
+      
+      # PS1 configuration
+      export PS1="\[\033[01;32m\]\u@\h[\W]\[\033[33m\]\$(parse_git_branch)\[\033[01;32m\]>\[$(tput sgr0)\] "
+  when: result.rc == 1
+  tags:
+    - bash
+    - bash.bashrc
+

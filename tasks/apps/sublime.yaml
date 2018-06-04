@@ -1,0 +1,44 @@
+#
+# Installs the Sublime Text editor
+#
+- name: Checking for 'sublime-text' installation
+  command: dpkg-query -W sublime-text
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - sublime
+
+- name: Installing GPG key for 'sublime-text'
+  shell: wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+  args:
+    warn: no
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - sublime
+    
+- name: Adding 'sublime-text' repository
+  shell: echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - sublime
+    
+- name: Installing 'sublime-text' package
+  apt: 
+    name: sublime-text
+    update_cache: yes
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - sublime

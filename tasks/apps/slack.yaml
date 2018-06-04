@@ -1,0 +1,23 @@
+#
+# Installs Slack
+#
+- name: Checking for 'slack' installation
+  command: dpkg-query -W slack-desktop
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - comm
+    - slack
+  
+- name: Installing 'slack-{{ slack_version }}' package
+  apt:
+    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-amd64.deb
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - comm
+    - slack

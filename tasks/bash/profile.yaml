@@ -1,0 +1,118 @@
+- name: Checking '.profile' configuration
+  shell: grep "USR_HOME" /home/{{ user }}/.profile
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - bash
+    - bash.profile
+  
+- name: Declare $USR_HOME variable in '.profile'
+  blockinfile:
+    insertafter: EOF
+    dest: /home/{{ user }}/.profile
+    marker: "{mark}"
+    marker_begin: "# Usr HOME"
+    marker_end: ""
+    block: |
+      USR_HOME="$HOME/Usr"
+  when: result.rc == 1
+  tags:
+    - bash
+    - bash.profile
+  
+- name: Set private 'bin' location in '.profile'
+  blockinfile:
+    insertafter: EOF
+    dest: /home/{{ user }}/.profile
+    marker: "{mark}"
+    marker_begin: "# set PATH so it includes personal bin if it exists"
+    marker_end: ""
+    block: |
+      if [ -d "$USR_HOME/bin" ]; then
+          PATH="$USR_HOME/bin:$PATH"
+      fi
+  when: result.rc == 1
+  tags:
+    - bash
+    - bash.profile
+  
+- name: Enable ENHANCD in '.profile'
+  blockinfile:
+    insertafter: EOF
+    dest: /home/{{ user }}/.profile
+    marker: "{mark}"
+    marker_begin: "# Enable ENHANCD"
+    marker_end: ""
+    block: |
+      source $USR_HOME/bin/enhancd/init.sh
+      ENHANCD_FILTER=fzy
+      export ENHANCD_FILTER
+  when: result.rc == 1
+  tags:
+    - bash
+    - bash.profile
+
+- name: Adding useful aliases in '.profile'
+  blockinfile:
+    insertafter: EOF
+    dest: /home/{{ user }}/.profile
+    marker: "{mark}"
+    marker_begin: "# Aliases"
+    marker_end: ""
+    block: |
+      alias install='sudo apt-get install'
+      alias search='sudo apt-cache search'
+      alias remove='sudo apt-get purge'
+      alias update='sudo apt-get update'
+      alias upgrade='sudo apt-get upgrade'
+      alias autoclean='sudo apt autoclean'
+      alias autoremove='sudo apt autoremove'
+      alias reboot='sudo reboot'
+      alias ifconfig='sudo ifconfig'
+      alias grep='grep -n --color=auto'
+      alias emacs='emacs -nw'
+      alias hist='history | grep'
+      alias df='pydf'
+      alias c='clear'
+      alias emptytrash='rm -rf ~/.local/share/Trash'
+      alias docker='sudo docker'
+      alias speedtest='curl -s https://raw/githubsercontent.com/sivel/speedtest-cli/master/speedtest.py | python -'
+  when: result.rc == 1
+  tags:
+    - bash
+    - bash.profile
+
+- name: Append libs to PATH in '.profile'
+  blockinfile:
+    insertafter: EOF
+    dest: /home/{{ user }}/.profile
+    marker: ""
+    block: |
+      # Scala
+      PATH="$USR_HOME/opt/scala/bin:$PATH"
+      
+      # Sbt
+      PATH="$USR_HOME/opt/sbt/bin:$PATH"
+      
+      # Maven
+      PATH="$USR_HOME/opt/maven/bin:$PATH"
+  when: result.rc == 1
+  tags:
+    - bash
+    - bash.profile
+
+- name: Export 'PATH' and 'LD_LIBRARY_PATH'
+  blockinfile:
+    insertafter: EOF
+    dest: /home/{{ user }}/.profile
+    marker: "{mark}"
+    marker_begin: "# Export"
+    marker_end: ""
+    block: |
+      export PATH LD_LIBRARY_PATH
+  when: result.rc == 1
+  tags:
+    - bash
+    - bash.profile
+  

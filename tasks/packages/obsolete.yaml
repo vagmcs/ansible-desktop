@@ -1,0 +1,9 @@
+#
+# Removes obsolete packages
+#
+- name: Removing obsolete packages
+  apt:
+    state: absent
+    name: "{{ obsolete_packages }}"
+  tags:
+    - packages.remove

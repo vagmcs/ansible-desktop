@@ -1,0 +1,9 @@
+#
+# Installs system related packages
+#
+- name: Installing system packages
+  apt: 
+    name: "{{ system_packages }}"
+  tags: 
+    - packages
+    - packages.sys

@@ -1,0 +1,9 @@
+#
+# Installs tex packages
+#
+- name: Installing texlive packages
+  apt:
+    name: "{{ tex_packages }}"
+  tags:
+    - packages
+    - texlive

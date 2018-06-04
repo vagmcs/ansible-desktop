@@ -1,0 +1,9 @@
+#
+# Installs development related packages
+#
+- name: Installing develop packages
+  apt:
+    name: "{{ dev_packages }}"
+  tags:
+    - packages
+    - packages.dev

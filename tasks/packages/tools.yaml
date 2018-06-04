@@ -1,0 +1,9 @@
+#
+# Installs various useful tools
+#
+- name: Installing useful tools packages
+  apt:
+    name: "{{ tool_packages }}"
+  tags:
+    - packages
+    - packages.tools

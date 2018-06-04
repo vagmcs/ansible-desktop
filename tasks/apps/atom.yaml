@@ -1,0 +1,23 @@
+#
+# Installs the Atom editor
+#
+- name: Checking for 'atom' installation
+  command: dpkg-query -W atom
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - atom
+    
+- name: Installing 'atom' package
+  apt:
+    deb: https://atom.io/download/deb
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - atom

@@ -1,0 +1,9 @@
+#
+# Installs useful apps
+#
+- name: Installing useful apps
+  apt:
+    name: "{{ app_packages }}"
+  tags:
+    - packages
+    - packages.apps

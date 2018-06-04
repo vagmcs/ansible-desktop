@@ -1,0 +1,76 @@
+---
+- hosts: localhost
+  become: yes
+  vars_files:
+    - vars/defaults.yaml
+    - vars/packages.yaml
+
+  #
+  # Request username, full name and mail
+  #
+  vars_prompt:
+    - name: "user"
+      prompt: "Enter unix user:"
+      private: no
+
+    - name: "full_name"
+      prompt: "Enter your full name:"
+      private: no
+
+    - name: "email"
+      prompt: "Enter your email:"
+      private: no
+
+  tasks:
+    #
+    # Removing obsolete packages and cleanup
+    #
+    - import_tasks: tasks/packages/obsolete.yaml
+    - import_tasks: tasks/packages/cleanup.yaml
+        
+    #
+    # Installing various useful packages
+    #
+    - import_tasks: tasks/packages/sys.yaml
+    - import_tasks: tasks/packages/dev.yaml
+    - import_tasks: tasks/packages/git.yaml
+    - import_tasks: tasks/packages/tmux.yaml
+    - import_tasks: tasks/packages/texlive.yaml
+    - import_tasks: tasks/packages/tools.yaml
+    
+    #
+    # Installing application packages
+    #
+    - import_tasks: tasks/apps/common.yaml
+    - import_tasks: tasks/apps/docker.yaml
+    - import_tasks: tasks/apps/skype.yaml
+    - import_tasks: tasks/apps/viber.yaml
+    - import_tasks: tasks/apps/spotify.yaml
+    - import_tasks: tasks/apps/slack.yaml
+    - import_tasks: tasks/apps/dropbox.yaml
+    - import_tasks: tasks/apps/ownCloud.yaml
+    - import_tasks: tasks/apps/teamviewer.yaml
+    - import_tasks: tasks/apps/toolbox.yaml
+    - import_tasks: tasks/apps/atom.yaml
+    - import_tasks: tasks/apps/sublime.yaml
+    - import_tasks: tasks/apps/virtualbox.yaml
+
+    #
+    # Configuring GNOME desktop
+    #
+    - import_tasks: tasks/gnome/apps.yaml
+    - import_tasks: tasks/gnome/nautilus.yaml
+    - import_tasks: tasks/gnome/desktop.yaml
+    - import_tasks: tasks/gnome/theme.yaml
+    
+    #
+    # Configuring bash
+    #
+    - import_tasks: tasks/bash/localusr.yaml
+    - import_tasks: tasks/bash/bashrc.yaml
+    - import_tasks: tasks/bash/profile.yaml
+
+    #
+    # Cleaning up
+    #
+    - import_tasks: tasks/packages/cleanup.yaml

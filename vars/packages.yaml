@@ -1,0 +1,91 @@
+obsolete_packages:
+  - five-or-more
+  - four-in-a-row
+  - gnome-klotski
+  - gnome-mahjongg
+  - gnome-mines
+  - gnome-nibbles
+  - gnome-robots
+  - gnome-sudoku
+  - gnome-taquin
+  - gnome-tetravex
+  - hitori
+  - quadrapassel
+  - lightsoff
+  - tali
+  - swell-foop
+  - iagno
+  - cheese
+  - gnome-dictionary
+  - gnome-orca
+  - gnome-weather
+  - gnome-logs
+  - gnome-maps
+  - yelp
+  - inkscape
+  - reportbug
+  - tracker
+  - totem
+  - evolution
+  - polari
+  - libreoffice-base
+  - libreoffice-math
+
+system_packages:
+  - htop
+  - nmon
+  - aptitude
+  - apt-transport-https
+  - libssl1.0.0
+  - gnupg2
+
+dev_packages:
+  - gcc
+  - g++
+  - make
+  - cmake
+  - flex
+  - bison
+  - build-essential
+  - emacs
+  
+app_packages:
+  - thunderbird
+  - meld
+  - vlc
+  - filezilla
+  - okular
+
+tex_packages:
+  - texlive-base
+  - texlive-latex-base
+  - texlive-latex-recommended
+  - texlive-latex-extra
+  - texlive-fonts-recommended
+  - texlive-generic-recommended
+  - texlive-generic-extra
+  - texlive-plain-extra
+  - texlive-pictures
+  - texlive-xetex
+  - texlive-bibtex-extra
+  - texlive-extra-utils
+  - texlive-font-utils
+  - texlive-fonts-extra
+  - texlive-formats-extra
+  - texlive-pstricks
+  - texlive-publishers
+  - texlive-science
+  - texlive-lang-greek 
+
+tool_packages:
+  - curl
+  - pdftk
+  - neofetch
+  - figlet
+  - xdg-utils
+  - neofetch
+  - pydf
+  - ghostscript
+  - libgs-dev
+  - python-psutil
+  

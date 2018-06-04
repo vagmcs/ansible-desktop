@@ -1,0 +1,72 @@
+#
+# Configures GNOME desktop
+#
+- name: Enable Desktop icons
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/desktop/background/show-desktop-icons"
+    value: "true"
+  tags:
+    - gnome
+    - gnome.desktop
+
+- name: Hide home from Desktop
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/nautilus/desktop/home-icon-visible"
+    value: "false"
+  tags:
+    - gnome
+    - gnome.desktop
+
+- name: Hide trash from Desktop
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/nautilus/desktop/trash-icon-visible"
+    value: "false"
+  tags:
+    - gnome
+    - gnome.desktop
+
+- name: Enable window minimization/maximization
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/desktop/wm/preferences/button-layout"
+    value: "'appmenu:minimize,maximize,close'"
+  tags:
+    - gnome
+    - gnome.desktop
+
+- name: Enable clock date
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/desktop/interface/clock-show-date"
+    value: "true"
+  tags:
+    - gnome
+    - gnome.desktop
+    
+- name: Loading Desktop background
+  copy:
+    src=tasks/gnome/theme/background/space.jpeg
+    dest=/home/{{ user }}/Pictures
+    owner="{{ user }}"
+    group="{{ user }}"
+  tags:
+    - gnome
+    - gnome.desktop
+
+- name: Changing Desktop background
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/desktop/background/picture-uri"
+    value: "'file:///home/{{ user }}/Pictures/space.jpeg'"
+  tags:
+    - gnome
+    - gnome.desktop

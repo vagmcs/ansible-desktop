@@ -1,0 +1,44 @@
+#
+# Installs Jetbrains Toolbox
+#
+- name: Checking for 'jetbrains-toolbox' installation
+  stat:
+    path: /home/{{ user }}/.local/share/applications/jetbrains-toolbox.desktop
+  register: result
+  changed_when: not result.stat.exists
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - toolbox
+
+- name: Downloading 'jetbrains-toolbox'
+  get_url: 
+    url: https://download.jetbrains.com/toolbox/jetbrains-toolbox-{{ toolbox_version }}.tar.gz
+    dest: /tmp
+  when: not result.stat.exists
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - toolbox
+
+- name: Unpacking 'jetbrains-toolbox'
+  unarchive:
+    src: /tmp/jetbrains-toolbox-{{ toolbox_version }}.tar.gz
+    dest: /tmp
+  when: not result.stat.exists
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - toolbox
+    
+- name: Installing 'jetbrains-toolbox' package
+  script: /tmp/jetbrains-toolbox-{{ toolbox_version }}/jetbrains-toolbox
+  when: not result.stat.exists
+  tags:
+    - packages
+    - packages.apps
+    - editors
+    - toolbox

@@ -1,0 +1,44 @@
+#
+# Installs ownCloud
+#
+- name: Checking for 'ownCloud' installation
+  command: dpkg-query -W owncloud-client
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - cloud
+    - owncloud
+    
+- name: Installing GPG key for 'ownCloud'
+  shell: wget -nv https://download.opensuse.org/repositories/isv:ownCloud:desktop/Debian_9.0/Release.key -O- | sudo apt-key add -
+  args:
+    warn: no
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - cloud
+    - owncloud
+
+- name: Adding 'ownCloud' repository
+  shell: echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_9.0/ /' > /etc/apt/sources.list.d/isv:ownCloud:desktop.list
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - cloud
+    - owncloud
+  
+- name: Installing 'ownCloud' package
+  apt: 
+    name: owncloud-client
+    update_cache: yes
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - cloud
+    - owncloud

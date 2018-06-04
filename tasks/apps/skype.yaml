@@ -1,0 +1,23 @@
+#
+# Installs Skype
+#
+- name: Checking for 'skype' installation
+  command: dpkg-query -W skypeforlinux
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - comm
+    - skype
+  
+- name: Installing 'skype' package
+  apt:
+    deb: https://go.skype.com/skypeforlinux-64.deb
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - comm
+    - skype

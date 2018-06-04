@@ -1,0 +1,41 @@
+#
+# Installs Docker
+#
+- name: Checking for 'docker' installation
+  command: dpkg-query -W docker-ce
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - docker
+    
+- name: Adding apt keys for 'docker'
+  shell: curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+  args:
+    warn: no  
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - docker
+    
+- name: Adding 'docker' repository
+  apt_repository: 
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/debian stretch stable'
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - docker
+
+- name: Installing 'docker' package
+  apt: 
+    name: docker-ce 
+    update_cache: yes
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - docker

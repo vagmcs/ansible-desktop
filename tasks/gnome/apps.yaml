@@ -1,0 +1,91 @@
+#
+# Configures GNOME app icons
+#
+- name: Removing 'emacs xterm' app
+  file:
+    path: /usr/share/applications/emacs24-term.desktop
+    state: absent
+  tags:
+    - gnome
+    - gnome.icons
+
+- name: Removing '(GUI)' suffix from 'emacs' app
+  replace:
+    path: /usr/share/applications/emacs24.desktop
+    regexp: 'Name=GNU Emacs 24 \(GUI\)'
+    replace: 'Name=GNU Emacs 24'
+  tags:
+    - gnome
+    - gnome.icons
+
+- name: Renaming 'Synaptic Package Manager' to 'Synaptic'
+  replace:
+    path: /usr/share/applications/synaptic.desktop
+    regexp: 'Name=Synaptic Package Manager'
+    replace: 'Name=Synaptic'
+  tags:
+    - gnome
+    - gnome.icons
+
+- name: Renaming 'Software & Updates' to 'Software Updates'
+  replace:
+    path: /usr/share/applications/software-properties-gnome.desktop
+    regexp: 'Name=Software & Updates'
+    replace: 'Name=Software Updates'
+  tags:
+    - gnome
+    - gnome.icons
+
+- name: Renaming 'GNU Image Manipulation Program' to 'GIMP'
+  replace:
+    path: /usr/share/applications/gimp.desktop
+    regexp: 'Name=GNU Image Manipulation Program'
+    replace: 'Name=GIMP'
+  tags:
+    - gnome
+    - gnome.icons
+
+- name: Renaming 'LibreOffice Writer' to 'Writer'
+  replace:
+    path: /usr/share/applications/libreoffice-writer.desktop
+    regexp: 'Name=LibreOffice Writer'
+    replace: 'Name=Writer'
+  tags:
+    - gnome
+    - gnome.icons
+    
+- name: Renaming 'LibreOffice Calc' to 'Calc'
+  replace:
+    path: /usr/share/applications/libreoffice-calc.desktop
+    regexp: 'Name=LibreOffice Calc'
+    replace: 'Name=Calc'
+  tags:
+    - gnome
+    - gnome.icons
+
+- name: Renaming 'LibreOffice Impress' to 'Impress'
+  replace:
+    path: /usr/share/applications/libreoffice-impress.desktop
+    regexp: 'Name=LibreOffice Impress'
+    replace: 'Name=Impress'
+  tags:
+    - gnome
+    - gnome.icons
+
+- name: Renaming 'LibreOffice Draw' to 'Draw'
+  replace:
+    path: /usr/share/applications/libreoffice-draw.desktop
+    regexp: 'Name=LibreOffice Draw'
+    replace: 'Name=Draw'
+  tags:
+    - gnome
+    - gnome.icons
+    
+- name: Moving 'htop' to 'X-Gnome Utilities'
+  replace:
+    path: /usr/share/applications/htop.desktop
+    regexp: 'Categories=ConsoleOnly;System;$'
+    replace: 'Categories=ConsoleOnly;System;X-GNOME-Utilities;'
+  tags:
+    - gnome
+    - gnome.icons

@@ -1,0 +1,21 @@
+#
+# Installs TeamViewer
+#
+- name: Checking for 'teamviewer' installation
+  command: dpkg-query -W teamviewer
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - teamviewer
+  
+- name: Installing 'teamviewer' package
+  apt:
+    deb: https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - teamviewer

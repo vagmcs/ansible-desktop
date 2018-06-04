@@ -1,0 +1,40 @@
+#
+# Installs Virtual Box
+#
+- name: Checking for 'virtual-box' Installation
+  command: dpkg-query -W virtualbox-{{ vb_version }}
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - virtualbox
+
+- name: Installing GPG key for 'virtual-box'
+  shell: wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+  args:
+    warn: no
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - virtualbox
+    
+- name: Adding 'virtual-box' repository
+  shell: echo "deb https://download.virtualbox.org/virtualbox/debian stretch contrib" | sudo tee /etc/apt/sources.list.d/virtual-box.list
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - virtualbox
+  
+- name: Installing 'virtual-box' package
+  apt: 
+    name: virtualbox-{{ vb_version }}
+    update_cache: yes
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - virtualbox

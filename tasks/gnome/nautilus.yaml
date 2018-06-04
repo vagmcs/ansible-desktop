@@ -1,0 +1,31 @@
+#
+# Configuring Nautilus
+#
+- name: Changing folder zoom level to 67%
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/nautilus/icon-view/default-zoom-level"
+    value: "'standard'"
+  tags:
+    - gnome
+    - gnome.nautilus
+ 
+- name: Installing VCS support
+  apt:
+    name: rabbitvcs-nautilus
+  tags:
+    - gnome
+    - gnome.nautilus
+    
+- name: Configuring VCS icons
+  shell: cp tasks/gnome/theme/rabbitvcs-emblems/* /usr/share/icons/hicolor/scalable/emblems/
+  tags:
+    - gnome
+    - gnome.nautilus
+      
+- name: Creating template files
+  shell: cp tasks/gnome/theme/templates/* /home/"{{ user }}"/Templates/
+  tags:
+    - gnome
+    - gnome.nautilus

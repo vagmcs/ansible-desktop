@@ -1,0 +1,87 @@
+#
+# Sets GNOME custom themes
+#
+- name: Enabling basic extensions
+  become: yes
+  become_user: "{{ user }}"
+  dconf: 
+    key: "/org/gnome/shell/enabled-extensions"
+    value: "['places-menu@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com']"
+  tags:
+    - gnome
+    - gnome.themes
+
+- name: Checking for Faenza icons
+  stat:
+    path: /home/{{ user }}/.icons
+  register: result
+  changed_when: not result.stat.exists
+  tags:
+    - gnome
+    - gnome.themes  
+
+- name: Downloading Faenza icons
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    repo: https://github.com/shlinux/faenza-icon-theme.git
+    dest: /home/{{ user }}/.icons
+  when: not result.stat.exists
+  tags:
+    - gnome
+    - gnome.themes
+
+- name: Cleaning Faenza repo
+  file:
+    state: absent
+    path: /home/{{ user }}/.icons/{{ item }}
+  loop:
+    - .git
+    - INSTALL
+    - UNINSTALL
+    - ChangeLog
+    - README
+    - AUTHORS
+    - LICENSE
+    - emesene
+  tags:
+    - gnome
+    - gnome.themes
+
+- name: Setting Faenza icons
+  become: yes
+  become_user: "{{ user }}"
+  dconf: 
+    key: "/org/gnome/desktop/interface/icon-theme"
+    value: "'Faenza'"
+  tags:
+    - gnome
+    - gnome.themes
+
+- name: Installing themes
+  synchronize:
+    src: tasks/gnome/theme/.themes
+    dest: /home/{{ user }}
+  tags:
+    - gnome
+    - gnome.themes
+      
+- name: Setting 'Mist' as a shell theme
+  become: yes
+  become_user: "{{ user }}"
+  dconf: 
+    key: "/org/gnome/shell/extensions/user-theme/name"
+    value: "'Mist'"
+  tags:
+    - gnome
+    - gnome.themes
+    
+- name: Setting 'Matcha' as a GTK theme
+  become: yes
+  become_user: "{{ user }}"  
+  dconf: 
+    key: "/org/gnome/desktop/interface/gtk-theme"
+    value: "'Matcha'"
+  tags:
+    - gnome
+    - gnome.themes

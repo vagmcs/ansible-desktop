@@ -1,0 +1,24 @@
+#
+# Installs Dropbox
+#
+- name: Checking for 'dropbox' installation
+  command: dpkg-query -W dropbox
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - cloud
+    - dropbox
+  
+- name: Installing 'dropbox-{{ dropbox_version }}' package
+  apt:
+    deb: https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_{{ dropbox_version }}_amd64.deb
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - cloud
+    - dropbox
+

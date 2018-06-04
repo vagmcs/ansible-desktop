@@ -1,0 +1,33 @@
+#
+# Installs and configures tmux
+#
+- name: Checking for 'tmux' installation
+  command: dpkg-query -W tmux
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.dev
+    - tmux
+
+- name: Installing tmux
+  apt:
+    name: tmux
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.dev
+    - tmux
+
+- name: Configuring tmux
+  copy:
+    src: configs/.tmux.conf
+    dest: /home/{{ user }}
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.dev
+    - tmux

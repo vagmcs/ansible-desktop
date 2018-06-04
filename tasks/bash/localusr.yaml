@@ -1,0 +1,187 @@
+#
+# Configures local user folders and installs useful packages
+#
+- name: Create private 'bin' directory
+  file:
+    path: /home/{{ user }}/Usr/bin
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    recurse: yes
+  tags:
+    - bash
+    - bash.localusr
+
+- name: Create private 'opt' directory
+  file:
+    path: /home/{{ user }}/Usr/opt
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    recurse: yes
+  tags:
+    - bash
+    - bash.localusr
+
+- name: Create private 'dev' directory
+  file:
+    path: /home/{{ user }}/Usr/dev
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    recurse: yes
+  tags:
+    - bash
+    - bash.localusr
+
+#
+# Installs Scala locally
+#      
+- name: Downloading Scala
+  get_url:
+    url: https://downloads.lightbend.com/scala/2.12.6/scala-2.12.6.tgz
+    dest: /home/{{ user }}/Usr/opt/
+  tags:
+    - bash
+    - bash.localusr
+
+- name: Unpacking Scala
+  unarchive:
+    src: /home/{{ user }}/Usr/opt/scala-2.12.6.tgz
+    dest: /home/{{ user }}/Usr/opt
+  tags:
+    - bash
+    - bash.localusr
+      
+- name: Creating Symlink
+  file:
+    src: /home/{{ user }}/Usr/opt/scala-2.12.6
+    dest: /home/{{ user }}/Usr/opt/scala
+    state: link
+  tags:
+    - bash
+    - bash.localusr
+    
+- name: Removing Scala archive
+  file:
+    path: /home/{{ user }}/Usr/opt/scala-2.12.6.tgz
+    state: absent
+  tags:
+    - bash
+    - bash.localusr
+
+#
+# Installs Sbt locally
+#       
+- name: Downloading Sbt
+  get_url:
+    url: https://piccolo.link/sbt-1.1.6.tgz
+    dest: /home/{{ user }}/Usr/opt/
+  tags:
+    - bash
+    - bash.localusr
+
+- name: Unpacking Sbt
+  unarchive:
+    src: /home/{{ user }}/Usr/opt/sbt-1.1.6.tgz
+    dest: /home/{{ user }}/Usr/opt
+  tags:
+    - bash
+    - bash.localusr
+      
+- name: Configuring Sbt
+  file:
+    src: /home/{{ user }}/Usr/opt/sbt-1.1.6/sbt
+    dest: /home/{{ user }}/Usr/opt/
+  tags:
+    - bash
+    - bash.localusr
+    
+- name: Removing useless files
+  file:
+    path: /home/{{ user }}/Usr/opt/sbt-1.1.6
+    state: absent
+  tags:
+    - bash
+    - bash.localusr
+
+- name: Renaming Sbt package
+  shell: mv /home/{{ user }}/Usr/opt/sbt /home/{{ user }}/Usr/opt/sbt-1.1.6
+  tags:
+    - bash
+    - bash.localusr
+
+- name: Creating Symlink
+  file:
+    src: /home/{{ user }}/Usr/opt/sbt-1.1.6
+    dest: /home/{{ user }}/Usr/opt/sbt
+    state: link
+  tags:
+    - bash
+    - bash.localusr
+
+- name: Removing Sbt archive
+  file:
+    path: /home/{{ user }}/Usr/opt/sbt-1.1.6.tgz
+    state: absent
+  tags:
+    - bash
+    - bash.localusr
+
+#
+# Installs Maven locally
+#     
+- name: Downloading Maven
+  get_url:
+    url: http://apache.forthnet.gr/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
+    dest: /home/{{ user }}/Usr/opt/
+  tags:
+    - bash
+    - bash.localusr
+
+- name: Unpacking Maven
+  unarchive:
+    src: /home/{{ user }}/Usr/opt/apache-maven-3.5.3-bin.tar.gz
+    dest: /home/{{ user }}/Usr/opt
+  tags:
+    - bash
+    - bash.localusr
+      
+- name: Creating Maven Symlink
+  file:
+    src: /home/{{ user }}/Usr/opt/apache-maven-3.5.3
+    dest: /home/{{ user }}/Usr/opt/maven
+    state: link
+  tags:
+    - bash
+    - bash.localusr
+    
+- name: Removing Maven archive
+  file:
+    path: /home/{{ user }}/Usr/opt/apache-maven-3.5.3-bin.tar.gz
+    state: absent
+  tags:
+    - bash
+    - bash.localusr
+
+#
+# Installs enhance cd locally
+#
+- name: Installing 'fzy' package
+  apt:
+    deb: https://github.com/jhawthorn/fzy/releases/download/0.9/fzy_0.9-1_amd64.deb
+  tags:
+    - bash
+    - bash.localusr   
+    
+- name: Installing Enhancd
+  git:
+    repo: https://github.com/b4b4r07/enhancd.git
+    dest: /home/{{ user }}/Usr/bin/enhancd
+  tags:
+    - bash
+    - bash.localusr
+  
+
+  
+

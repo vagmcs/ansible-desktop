@@ -1,0 +1,16 @@
+#
+# Cleans up the installation mess
+#
+- name: Removing useless packages from the cache
+  apt:
+    autoclean: yes
+  tags:
+    - packages
+    - cleanup
+    
+- name: Removing dependencies that are no longer required
+  apt:
+    autoremove: yes
+  tags:
+    - packages
+    - cleanup

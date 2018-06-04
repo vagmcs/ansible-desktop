@@ -1,0 +1,33 @@
+#
+# Installs Viber
+#
+- name: Checking for 'viber' installation
+  command: dpkg-query -W viber
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - comm
+    - viber
+
+- name: Downloading 'viber' package
+  get_url:
+    url: http://download.cdn.viber.com/cdn/desktop/Linux/viber.deb
+    dest: /tmp
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - comm
+    - viber
+    
+- name: Installing 'viber' package
+  shell: dpkg -i /tmp/viber.deb
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.apps
+    - comm
+    - viber

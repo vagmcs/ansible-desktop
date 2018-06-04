@@ -1,0 +1,39 @@
+#
+# Installs and configures git
+#
+- name: Checking for 'git' installation
+  command: dpkg-query -W git
+  register: result
+  failed_when: result.rc > 1
+  changed_when: result.rc == 1
+  tags:
+    - packages
+    - packages.dev
+    - git
+
+- name: Installing Git
+  apt: 
+    name: git
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.dev
+    - git
+      
+- name: Configuring Git
+  become: yes
+  become_user: "{{ user }}"
+  git_config:
+   name: "{{ item.name }}"
+   scope: global
+   value: "{{ item.value }}"
+  loop:
+    - { name: 'user.name', value: '{{ full_name }}'}
+    - { name: 'user.mail', value: '{{ email }}'}
+    - { name: 'core.editor', value: 'emacs' }
+    - { name: 'http.sslVerify', value: 'false' }
+  when: result.rc == 1
+  tags:
+    - packages
+    - packages.dev
+    - git
