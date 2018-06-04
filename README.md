@@ -1,9 +1,9 @@
 ## Ansible Desktop Setup for Debian 9
 
-Become a root user and install the following packages:
+Become a root user and do the following:
 
 ```bash
-apt-get install sudo dirmngr
+apt-get install sudo dirmngr git
 adduser <username> sudo
 ```
 
@@ -20,14 +20,14 @@ deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
 Then run these commands:
 
 ```bash
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
-sudo apt-get update
-sudo apt-get install ansible
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+apt-get update
+apt-get install ansible
 ```
 
-Finally, run the following to configure your workstation:
+Finally, run the `main.yml` playbook to configure your workstation:
 
 ```bash
-sudo ansible-pull -U https://github.com/vagmcs/ansible-desktop.git
+sudo ansible-playbook main.yml
 ```
 
