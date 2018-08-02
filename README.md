@@ -3,7 +3,7 @@
 Become a root user and do the following:
 
 ```bash
-apt-get install sudo dirmngr git
+apt-get install sudo dirmngr
 adduser <username> sudo
 ```
 
@@ -25,9 +25,9 @@ apt-get update
 apt-get install ansible
 ```
 
-Finally, run the `main.yml` playbook to configure your workstation:
+Finally, run the `local.yml` playbook to configure your workstation:
 
 ```bash
-sudo ansible-playbook main.yml
+sudo ansible-playbook local.yml
 ```
 
