@@ -30,6 +30,7 @@ obsolete_packages:
   - polari
   - libreoffice-base
   - libreoffice-math
+  - brasero
 
 system_packages:
   - htop
